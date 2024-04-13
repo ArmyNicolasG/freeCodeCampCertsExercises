@@ -11,7 +11,7 @@ app.get("/", function (_req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/api/:date?", (req, res) => {
+app.get("/api/:date?", (req, res) => { // Exercise 1.
   const dateParam = req.params.date; 
   let dateObject; 
   if (!req.params.date) dateObject = new Date();
@@ -20,8 +20,6 @@ app.get("/api/:date?", (req, res) => {
   if (isNaN(dateObject)) return res.json({ error: "Invalid Date" });
   else return res.json({unix: dateObject.getTime(), utc: dateObject.toUTCString()});
 });
-
-
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
