@@ -11,10 +11,14 @@ app.get("/", function (_req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/api/:date", function (req, res) {
-  let dateObj = new Date(unixTimestamp * 1000);
-  let utcString = dateObj.toUTCString();
-  res.json({ unix: req.params.date, utc: utcString });
+app.get("/api/:date?", (req, res) => {
+  const dateParam = req.params.date; 
+  let dateObject; 
+  if (!req.params.date) dateObject = new Date();
+  else if (/\d{5,}/.test(req.params.date)) dateObject = new Date(parseInt(req.params.date)); 
+  else dateObject = new Date(dateParam); 
+  if (isNaN(dateObject)) return res.json({ error: "Invalid Date" });
+  else return res.json({unix: dateObject.getTime(), utc: dateObject.toUTCString()});
 });
 
 
